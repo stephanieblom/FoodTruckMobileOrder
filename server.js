@@ -2,7 +2,7 @@ const express = require( "express" );
 const bodyParser = require('body-parser');
 const mysql = require( 'mysql' );
 
-const PORT = 8080;
+const PORT = process.env.PORT || 8080;
 const app = express();
 
 class Database {
