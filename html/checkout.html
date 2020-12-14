@@ -798,13 +798,28 @@ body{
 
 
   async function pullItem( itemInfo, idx ){
-    let pullLocal = window.localStorage.getItem(`items[${itemInfo}]`);
+    console.log(`Recieved data`, itemInfo, idx)
+
+    subTotal = window.localStorage.getItem(`subTotal`);
+    document.getElementById('subTotal').innerHTML = `<div>$ ${parseInt(subTotal).toFixed(2)}</div>`;
+    total =parseInt(subTotal)*1.05;
+    document.getElementById('Total').innerHTML = `<div>$ ${total.toFixed(2)}</div>`;
+      $('#itemList').append( `
+      <div role="listitem" class="menu-item w-dyn-item w-col w-col-6">
+        <div class="card" style="width: 18rem;">
+          <img class="card-img-top food-image-square-checkout w-inline-block" src="${itemInfo.thumbnail}" alt=" photo">
+          <div class="card-body">
+            <h5 class="card-title">${itemInfo.name}</h5>
+            <p class="card-text price">${itemInfo.price}</p>
+          </div>
+        </div>
+      ` );
     
     //console.log('item info', itemInfo);
-          const menuList = await $.get( `/api/order/${itemInfo.item_code}`);
-          if( !menuList ){ alert( `x SORRY API error :(` ); return; }
-          console.log(`Pulled item info`, menuList)
-          insertFood(menuList);
+          // const menuList = await $.get( `/api/order/${itemInfo.item_code}`);
+          // if( !menuList ){ alert( `x SORRY API error :(` ); return; }
+          // console.log(`Pulled item info`, menuList)
+          // insertFood(menuList);
   }
 
 
@@ -817,12 +832,16 @@ body{
         items = window.localStorage.getItem('items');
         items = JSON.parse(window.localStorage.getItem('items'));
         console.log('Items in cart:', items);
+        itemsArray = items;
         //console.log('Item:', items[2])
 
+        let idx = 0
         Object.values(items).forEach(
           key =>{
-          console.log(key, items[key])
-          pullItem(key)}
+          console.log(key,idx)
+          pullItem(key,idx)
+          idx=idx+1
+        }
           );
 
 
@@ -834,19 +853,19 @@ body{
 
       });   
       
-      async function addItem(id) {
-      event.preventDefault();
+      // async function addItem(id) {
+      // event.preventDefault();
 
-      // const addItem = await $.post(`/api/addItem/${id}`);
-      console.log(`Calling get function for item with id: `, id)
-      //const pullBurgerUpdate = await $.get(`/api/itemUpdate/${id}`);
+      // // const addItem = await $.post(`/api/addItem/${id}`);
+      // console.log(`Calling get function for item with id: `, id)
+      // //const pullBurgerUpdate = await $.get(`/api/itemUpdate/${id}`);
 
-      itemsArray.push(id)
-      localStorage.setItem('items', JSON.stringify(itemsArray))
-      console.log('Adding Item ID:', id)
-      const data = JSON.parse(localStorage.getItem('items'))
+      // itemsArray.push(id)
+      // localStorage.setItem('items', JSON.stringify(itemsArray))
+      // console.log('Adding Item ID:', id)
+      // const data = JSON.parse(localStorage.getItem('items'))
 
-}
+// }
 
 async function placeOrder(){
 
